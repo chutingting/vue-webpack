@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import NavMenu from './components/nav.vue'
+import NavMenu from './pages/nav.vue'
 export default {
   name: 'App',
   components: {
