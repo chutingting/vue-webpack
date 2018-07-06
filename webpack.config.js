@@ -4,7 +4,11 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-module.exports = (env = {}) =>{
+function resolve(dir) {
+  return path.join(__dirname, '..', dir)
+}
+
+module.exports = (env = {}) => {
   console.log(`------------------- ${env.Generative?'生产':'开发'}环境 -------------------`);
   var plugins = (module.exports.plugins || []).concat([
     new CleanWebpackPlugin(['dist']),
@@ -18,15 +22,17 @@ module.exports = (env = {}) =>{
       minimize: true
     })
   ])
-  if(!env.Generative){
+  if (!env.Generative) {
     plugins = [];
   }
-  plugins.push(new HtmlWebpackPlugin({template: './src/index.html'}));
+  plugins.push(new HtmlWebpackPlugin({
+    template: './src/index.html'
+  }));
 
   return {
-    entry: './src/main.js',//入口
+    entry: './src/main.js', //入口
     output: {
-      path: path.resolve(__dirname, './dist'),//输出结果
+      path: path.resolve(__dirname, './dist'), //输出结果
       // publicPath: evn.production ? './' : '/', //文件路径
       filename: '[name].js',
       chunkFilename: '[id].chunk.js'
@@ -38,8 +44,7 @@ module.exports = (env = {}) =>{
           test: /\.vue$/,
           loader: 'vue-loader',
           options: {
-            loaders: {
-            }
+            loaders: {}
             // other vue-loader options go here
           }
         },
@@ -49,19 +54,28 @@ module.exports = (env = {}) =>{
           loader: 'babel-loader',
           exclude: /node_modules/
         },
-        // 加载图标
+        //加载图标
         {
-          test: /\.(png|jpg|gif|svg)$/,
+          test: /\.(eot|woff|ttf|svg)$/,
           loader: 'file-loader',
           options: {
             name: '[name].[ext]?[hash]'
           }
         },
-        //加载css
-        {
+        // 加载css
+       /*  {
           test: /\.css$/,
           loader: "style-loader!css-loader",
           exclude: /node_modules/
+        }, */
+        {
+          test: /\.css$/,
+          use: ['style-loader', {
+            loader: 'css-loader',
+            options: {
+              modules: true, //让css-loader支持Css Modules。
+            },
+          }]
         },
         {
           test: /\.scss$/,
@@ -73,26 +87,27 @@ module.exports = (env = {}) =>{
           options: {
             minimize: false
           }
-        }
+        },
       ]
     },
     resolve: {
       alias: {
-        'vue$': 'vue/dist/vue.esm.js'
+        'vue$': 'vue/dist/vue.esm.js',
+        '@': resolve('src')
       }
     },
     devServer: {
       inline: true, //检测文件变化，实时构建并刷新浏览器
       port: "8000",
       proxy: {
-          '/api': {
-              target: '',
-              pathRewrite: {
-                  "^/api": ""
-              },
-              secure: false,
-              changeOrigin: true
+        '/api': {
+          target: '',
+          pathRewrite: {
+            "^/api": ""
           },
+          secure: false,
+          changeOrigin: true
+        },
       },
       //404 页面返回 index.html 
       historyApiFallback: true,
@@ -100,7 +115,7 @@ module.exports = (env = {}) =>{
     performance: {
       hints: false
     },
-    plugins:plugins,
-    devtool: '#eval-source-map'//开发模式下更方便定位错误
+    plugins: plugins,
+    devtool: '#eval-source-map' //开发模式下更方便定位错误
   }
 }

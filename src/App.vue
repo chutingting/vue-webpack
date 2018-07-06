@@ -1,11 +1,8 @@
 <template>
   <div class="row app">
 
-     <nav-menu></nav-menu>
-
-      <div class="tab-content col-10" >
-        <router-view />
-      </div>
+     <!-- <nav-menu></nav-menu> -->
+        <router-view></router-view>
 </div>
 </template>
 
@@ -20,7 +17,6 @@ export default {
 </script>
 
 <style>
-@import url('./static/bootstrap.min.css');
 *{font-size: 12px;}
 .app{margin: 20px;}
 </style>
