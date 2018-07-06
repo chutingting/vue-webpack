@@ -1,73 +1,70 @@
 <template>
-    <div class="upaload">
-        <span class="input-file">请选择
-            <input @change="change" :ref="refKey" type="file" id="file" class="imgFile">
-        </span>
-        <span style="margin-left:10px;">{{msg}}</span>
-        <input type="button" style="margin-left:10px;" class="btn btn-info" @click="upload" value="上传" />
-        <input type="button" style="margin-left:10px;" class="btn btn-info" @click="reset" value="重置" />
+  <div>
+    <span class="input-file">{{text}}
+      <input @change="change" :ref="refKey" type="file" class="imgFile">
+    </span>
+
+    <div class="fileName" v-if="fileList">
+      <i class="el-icon-document"></i> {{msg}}
+      <i class="el-icon-close close" @click="remove"></i>
     </div>
+  </div>
 </template>
 
 <script>
+import FileChecker from './fileChecker.js'
 export default {
-  name: "upload",
-  props: ["url", "type"],
+  name: 'upload',
+  props: ['type', 'text'],
   data() {
     return {
-      msg: "",
-      refKey: "inputKey"
-    };
+      msg: '',
+      refKey: 'inputKey',
+      fileList: false
+    }
   },
   methods: {
-    change() {
-      let val = this.$refs[this.refKey].value;
-      this.msg = val.substring(val.lastIndexOf("\\") + 1);
+    uploadValue(val) {
+      this.$emit('input', val)
     },
-    reset() {
+    remove() {
+      this.msg = ''
+      this.uploadValue('')
       this.$refs[this.refKey].value = ''
-      this.msg = '';
+      this.fileList = false
     },
-    upload() {
-      let dom = this.$refs[this.refKey];
-      let val = dom.value;
+    change() {
+      let dom = this.$refs[this.refKey]
+      let val = dom.value
+      this.msg = val.substring(val.lastIndexOf('\\') + 1)
       if (val) {
-        let formData = new FormData();
-        formData.append("file", dom.files[0]);
-        if (this.type) {
-          let fileName = dom.files[0].name;
-          let suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
-          debugger
-          if (this.type.indexOf(",") == -1) { //判断是否多个后缀
-            if (this.type != suffix) {
-              this.msg = "后缀名必须为:" + this.type;
-              return;
-            }
-          } else {
-            let res = this.type.split(",").filter(item => {
-              return item.toLowerCase() == suffix.toLowerCase();
-            });
-            if (res.length == 0) {
-              this.msg = "后缀名必须为:" + this.type;
-              return;
-            }
-          }
+        let option = {
+          type: this.type,
+          size: 0
         }
-         let config = {
-              headers: {
-                'Content-Type': 'multipart/form-data'
-              }
-            }
-        this.$http
-          .post(this.url, formData,config)
-          .then(data => {})
-          .catch(error => {});
+        let checkResult = FileChecker.fileValidate(dom.files[0], option)
+        if (checkResult.isSuccess) {
+          this.uploadValue(dom.files[0])
+          this.fileList = true
+        } else {
+          this.msg = checkResult.message
+          this.remove()
+          this.$message({
+            message: checkResult.message,
+            type: 'error'
+          })
+        }
+      } else {
+        this.$message({
+          message: '请选择上传文件',
+          type: 'error'
+        })
+        this.remove()
       }
     }
   },
-  created() {
-  }
-};
+  created() {}
+}
 </script>
 
 <style  scoped>
@@ -75,28 +72,49 @@ export default {
   position: relative;
   overflow: hidden;
   text-align: center;
-  width: 100%;
-  background-color: #2c7;
-  border-radius: 4px;
-  padding: 7px 10px;
+  display: inline-block;
+  background-color: #409eff;
+  border-radius: 3px;
+  padding: 9px 15px;
   font-size: 12px;
   font-weight: normal;
-  line-height: 18px;
   color: #fff;
   text-decoration: none;
 }
-.input-file input[type="file"] {
+.input-file input[type='file'] {
   position: absolute;
   top: 0;
   right: 0;
   font-size: 14px;
   background-color: #f00;
-  /*transform: translate(-300px, 0px) scale(4);*/
   height: 100%;
   width: 100%;
   opacity: 0;
   filter: alpha(opacity=0);
 }
+.fileName {
+  color: #606266;
+  background: #eef3f7;
+  line-height: 24px;
+  /* display: block; */
+  margin-right: 40px;
+  overflow: hidden;
+  font-size: 12px;
+  padding-left: 4px;
+  white-space: nowrap;
+  margin-top:10px;
+}
+.fileName i {
+  margin-right: 8px;
+}
+.fileName .close {
+  float: right;
+  line-height: 24px;
+  cursor: pointer;
+}
+/* .fileName:hover{
+    cursor: pointer;
+} */
 </style>
  
 

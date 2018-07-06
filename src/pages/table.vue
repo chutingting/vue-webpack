@@ -1,31 +1,31 @@
 <template>
-    <div>
-        <router-view></router-view>
-        <div v-if="tablePar">
-            <table class="table  table-bordered">
-                <thead>
-                    <tr>
-                        <th>日期</th>
-                        <th @click="ckThead">平均ctr (点击排序)</th>
-                        <th>平均cmp</th>
-                        <th>平均roi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(item,index) in listData" :key="index">
-                        <th>{{item.logDate}}</th>
-                        <td>{{item.ctr}}</td>
-                        <td>{{item.ecpm}}</td>
-                        <td>{{item.roi}}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <p class="text-right">当前第{{curPage}}页
-                <button class="btn btn-sm btn-info" @click="prev">上一页</button>
-                <button class="btn btn-sm btn-info" @click="next">下一页</button>
-            </p>
-        </div>
+  <div>
+    <router-view></router-view>
+    <div v-if="tablePar">
+      <table class="table  table-bordered">
+        <thead>
+          <tr>
+            <th>日期</th>
+            <th @click="ckThead">平均ctr (点击排序)</th>
+            <th>平均cmp</th>
+            <th>平均roi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item,index) in listData" :key="index">
+            <th>{{item.logDate}}</th>
+            <td>{{item.ctr}}</td>
+            <td>{{item.ecpm}}</td>
+            <td>{{item.roi}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="text-right">当前第{{curPage}}页
+        <button class="btn btn-sm btn-info" @click="prev">上一页</button>
+        <button class="btn btn-sm btn-info" @click="next">下一页</button>
+      </p>
     </div>
+  </div>
 </template>
 <script>
 export default {
@@ -45,6 +45,8 @@ export default {
       console.log(to, from);
       if (from.path == "/table") {
         this.tablePar = false;
+      } else {
+        this.tablePar = true;
       }
     }
   },
