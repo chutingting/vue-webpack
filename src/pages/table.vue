@@ -1,7 +1,7 @@
 <template>
   <div>
-    <router-view></router-view>
-    <div v-if="tablePar">
+    <!-- <router-view></router-view> -->
+    <div >
       <table class="table  table-bordered">
         <thead>
           <tr>

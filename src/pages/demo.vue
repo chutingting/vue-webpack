@@ -1,6 +1,5 @@
 <template>
   <div>
-    第三个页面
     <upload :type="type" :text='uploadText' v-model="uploadFiles"></upload>
     <button @click="upload" class="btn btn-sm">上传</button>
   </div>

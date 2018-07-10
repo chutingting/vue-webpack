@@ -1,37 +1,22 @@
 <template>
-    <el-container style="height: 500px; border: 1px solid #eee">
-        <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-            <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
-                <el-submenu index="1">
-                    <template slot="title">
-                        <i class="el-icon-location"></i>
-                        <span>导航一</span>
-                    </template>
-                    <el-menu-item-group>
-                        <template slot="title">分组一</template>
-                        <el-menu-item index="1-1">选项1</el-menu-item>
-                        <el-menu-item index="1-2">选项2</el-menu-item>
-                    </el-menu-item-group>
-                    <el-menu-item-group title="分组2">
-                        <el-menu-item index="1-3">选项3</el-menu-item>
-                    </el-menu-item-group>
-                    <el-submenu index="1-4">
-                        <template slot="title">选项4</template>
-                        <el-menu-item index="1-4-1">选项1</el-menu-item>
+    <el-container style="height:100%; border: 1px solid #eee">
+        <el-aside width="200px" style="background-color: #545c64">
+            <el-menu :default-active="$route.path" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff">
+                <template v-for="(item,index) in $router.options.routes">
+                    <el-submenu  :key="index" :index="index + ''"  v-if="item.children && !item.leaf">
+                        <template slot="title">
+                            <i :class="item.iconCls"></i>
+                            <span>{{item.name}}</span>
+                        </template>
+                        <el-menu-item-group>
+                            <el-menu-item v-for="(itemChild,indexChild) in item.children" :key="indexChild" :index="itemChild.path" @click="goRouterPage(itemChild)"><i :class="itemChild.iconCls"></i> {{itemChild.name}}</el-menu-item>
+                        </el-menu-item-group>
                     </el-submenu>
-                </el-submenu>
-                <el-menu-item index="2">
-                    <i class="el-icon-menu"></i>
-                    <span slot="title">导航二</span>
-                </el-menu-item>
-                <el-menu-item index="3" >
-                    <i class="el-icon-document"></i>
-                    <span slot="title">导航三</span>
-                </el-menu-item>
-                <el-menu-item index="4">
-                    <i class="el-icon-setting"></i>
-                    <span slot="title">导航四</span>
-                </el-menu-item>
+                    <el-menu-item v-if="item.leaf" :key="index" :index="item.children[0].path" @click="goRouterPage(item.children[0])">
+                        <i :class="item.children[0].iconCls"></i>
+                        <span slot="title">{{item.children[0].name}}</span>
+                    </el-menu-item>
+                </template>
             </el-menu>
         </el-aside>
 
@@ -49,25 +34,18 @@
             </el-header>
 
             <el-main>
-                yemian
-                <!-- <el-table :data="tableData">
-                    <el-table-column prop="date" label="日期" width="140">
-                    </el-table-column>
-                    <el-table-column prop="name" label="姓名" width="120">
-                    </el-table-column>
-                    <el-table-column prop="address" label="地址">
-                    </el-table-column>
-                </el-table> -->
+                <router-view></router-view>
             </el-main>
         </el-container>
     </el-container>
 </template>
 <style>
 .el-header {
-  background-color: #b3c0d1;
-  color: #333;
+  background-color: rgb(84, 92, 100);
+  color: #fff;
   line-height: 60px;
 }
+.el-header i{color: #fff;}
 
 .el-aside {
   color: #333;
@@ -88,11 +66,17 @@ export default {
   },
   methods: {
     handleOpen(key, keyPath) {
-      console.log(key, keyPath);
+     // console.log(key, keyPath);
     },
     handleClose(key, keyPath) {
-      console.log(key, keyPath);
+    //  console.log(key, keyPath);
+    },
+    goRouterPage(item){
+       this.$router.push({ path: item.path })
     }
+  },
+  created() {
+    console.log(this.$router.options.routes);
   }
 };
 </script>

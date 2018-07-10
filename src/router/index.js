@@ -1,43 +1,71 @@
-import Table from "../pages/table.vue"
-import Demo from "../pages/demo.vue"
-import Echarts from "../pages/echarts.vue"
-import Tablechild from "../pages/tableChild.vue"
-import Home from "../pages/Home.vue"
+import Table from "../pages/table.vue";
+import Demo from "../pages/demo.vue";
+import Echarts from "../pages/nav1/echarts.vue";
+import Promise from '@/pages/nav1/promise.vue'
+import Home from "../pages/Home.vue";
 
 let routes = [
-  {
+  /* {
     path: '/',
-    redirect: 'demo'
-  },
-  {
-    path: '/table',
-    name: '表格',
-    component: Table,
-    children: [{
-      path: '/table/tablechild',
-      name: '子页面',
-      component: Tablechild
-    }]
+    redirect: 'Echarts'
   },
   {
     path: '/echarts',
-    name: '图表',
+    name: 'Echarts',
     component: Echarts
+  }, */
+  {
+    path: '/',
+    name: '导航一',
+    iconCls: 'el-icon-menu',
+    component: Home,
+    children: [
+      {
+        iconCls: 'el-icon-time',
+        path: '/echarts',
+        name: 'Echarts',
+        component: Echarts
+      },
+      {
+        iconCls: 'el-icon-share',
+        path: '/promise',
+        name: 'Promise',
+        component: Promise
+      }
+    ]
   },
   {
-    path: '/demo',
-    name: 'demo',
-    component: Demo
+    path: '/',
+    name: '表格',
+    leaf: true,// 没有子节点
+    component: Home,
+    children: [
+      {
+        iconCls:'el-icon-setting',
+        path: '/table',
+        name: '表格',
+        component: Table
+      }
+    ]
   },
   {
-    path: '/home',
-    name: 'Home',
-    component: Home
+    path: '/',
+    name: 'upload',
+    leaf: true,// 没有子节点
+    component: Home,
+    children: [
+      {
+        iconCls:'el-icon-upload',
+        path: '/demo',
+        name: 'upload',
+        component: Demo
+      }
+    ]
   }
 ]
 
 export default routes;
 // export default new Router({
-//   mode:'history', //开启历史模式，不现实#
+//   mode:'history', //开启历史模式，不显实#
 
 // })

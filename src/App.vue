@@ -1,5 +1,5 @@
 <template>
-  <div class="row app">
+  <div class="app">
 
      <!-- <nav-menu></nav-menu> -->
         <router-view></router-view>
@@ -18,5 +18,5 @@ export default {
 
 <style>
 *{font-size: 12px;}
-.app{margin: 20px;}
+html,body,.app{height: 100%;}
 </style>

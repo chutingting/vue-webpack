@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 function resolve(dir) {
-  return path.join(__dirname, '..', dir)
+  return path.join(__dirname, '.', dir)
 }
 
 module.exports = (env = {}) => {
@@ -63,12 +63,12 @@ module.exports = (env = {}) => {
           }
         },
         // 加载css
-       /*  {
+        {
           test: /\.css$/,
           loader: "style-loader!css-loader",
           exclude: /node_modules/
-        }, */
-        {
+        },
+       /*  {
           test: /\.css$/,
           use: ['style-loader', {
             loader: 'css-loader',
@@ -76,7 +76,7 @@ module.exports = (env = {}) => {
               modules: true, //让css-loader支持Css Modules。
             },
           }]
-        },
+        }, */
         {
           test: /\.scss$/,
           loader: "style-loader!css-loader!sass-loader!"
@@ -93,7 +93,7 @@ module.exports = (env = {}) => {
     resolve: {
       alias: {
         'vue$': 'vue/dist/vue.esm.js',
-        '@': resolve('src')
+        '@': resolve('/src')
       }
     },
     devServer: {

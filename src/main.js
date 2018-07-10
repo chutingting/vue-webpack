@@ -3,10 +3,11 @@
 
 import Vue from 'vue';
 import Router from 'vue-router';
+import ElementUI from 'element-ui';
+// import 'element-ui/lib/theme-chalk/index.css';
 import VueResouse from 'vue-resource'
-import ElementUI from 'element-ui'
-//import 'element-ui/lib/theme-chalk/index.css'
-//import './static/css/app.css'
+import './static/css/app.css'
+import './static/bootstrap.min.css'
 import App from './App.vue';
 import routes from './router/index.js';
 
