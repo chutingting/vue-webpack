@@ -88,6 +88,14 @@ module.exports = (env = {}) => {
             minimize: false
           }
         },
+        {
+          test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+          loader: 'url-loader',
+          options: {
+            limit: 10000,
+            name: '[name].[ext]?[hash]'
+          }
+        }
       ]
     },
     resolve: {

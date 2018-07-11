@@ -11,6 +11,8 @@ import './static/bootstrap.min.css'
 import App from './App.vue';
 import routes from './router/index.js';
 
+import { viewImage } from "./directive/view-image.js";
+
 
 
 Vue.use(Router);

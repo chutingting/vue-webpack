@@ -1,8 +1,9 @@
 import Table from "../pages/table.vue";
 import Demo from "../pages/demo.vue";
 import Echarts from "../pages/nav1/echarts.vue";
-import Promise from '@/pages/nav1/promise.vue'
+import PromisePage from '@/pages/nav1/promise.vue'
 import Home from "../pages/Home.vue";
+import Directive from '../pages/nav1/directive.vue';
 
 let routes = [
   /* {
@@ -30,7 +31,13 @@ let routes = [
         iconCls: 'el-icon-share',
         path: '/promise',
         name: 'Promise',
-        component: Promise
+        component: PromisePage
+      },
+      {
+        iconCls: 'el-icon-share',
+        path: '/directive',
+        name: 'directive',
+        component: Directive
       }
     ]
   },
