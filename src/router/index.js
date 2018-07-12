@@ -1,5 +1,6 @@
 import Table from "../pages/table.vue";
-import Demo from "../pages/demo.vue";
+import uploadOne from "../pages/upload/upload-one.vue";
+import uploadMore from "../pages/upload/upload-more.vue";
 import Echarts from "../pages/nav1/echarts.vue";
 import PromisePage from '@/pages/nav1/promise.vue'
 import Home from "../pages/Home.vue";
@@ -58,14 +59,20 @@ let routes = [
   {
     path: '/',
     name: 'upload',
-    leaf: true,// 没有子节点
+    iconCls:'el-icon-upload',
     component: Home,
     children: [
       {
         iconCls:'el-icon-upload',
         path: '/demo',
-        name: 'upload',
-        component: Demo
+        name: 'upload-one',
+        component: uploadOne
+      },
+      {
+        iconCls:'el-icon-upload',
+        path: '/upload-more',
+        name: 'upload-more',
+        component: uploadMore
       }
     ]
   }
