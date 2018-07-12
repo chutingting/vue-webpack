@@ -79,7 +79,3 @@ let routes = [
 ]
 
 export default routes;
-// export default new Router({
-//   mode:'history', //开启历史模式，不显实#
-
-// })

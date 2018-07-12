@@ -22,6 +22,7 @@ Vue.use(ElementUI);
 Vue.config.productionTip = false;
 
 const router = new Router({
+  mode:'history',
   routes
 })
 
