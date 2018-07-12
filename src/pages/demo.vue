@@ -1,6 +1,6 @@
 <template>
   <div>
-    <upload :type="type" :text='uploadText' v-model="uploadFiles"></upload>
+    <upload :type="type" :text='uploadText' v-model="uploadFiles" :multiple="true"></upload>
     <button @click="upload" class="btn btn-sm">上传</button>
     <img src="../static/img/logo.png" alt="111" v-view-image>
   </div>

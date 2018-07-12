@@ -1,70 +1,94 @@
 <template>
   <div>
+    <!-- 上传多文件 multiple 可以选择多个 单个进行 push -->
     <span class="input-file">{{text}}
-      <input @change="change" :ref="refKey" type="file" class="imgFile">
+      <input @change="change" :ref="refKey" type="file" class="imgFile" :multiple="multiple">
     </span>
 
-    <div class="fileName" v-if="fileList">
-      <i class="el-icon-document"></i> {{msg}}
-      <i class="el-icon-close close" @click="remove"></i>
+    <input type="file" multiple >
+
+    <div v-if="fileListShow">
+      <div class="fileName" v-for="(item,index) in filesList" :key="index">
+        <i class="el-icon-document"></i> {{item.name}}
+        <i class="el-icon-close close" @click="remove(index, filesList)"></i>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import FileChecker from './fileChecker.js'
+import FileChecker from "./fileChecker.js";
+let that = null;
 export default {
-  name: 'upload',
-  props: ['type', 'text'],
+  name: "upload",
+  props: ["type", "text", "multiple"],
   data() {
     return {
-      msg: '',
-      refKey: 'inputKey',
-      fileList: false
-    }
+      msg: "",
+      refKey: "inputKey",
+      fileListShow: false,
+      filesList: [],
+      fileListName: []
+    };
   },
   methods: {
     uploadValue(val) {
-      this.$emit('input', val)
+      this.$emit("input", val);
     },
-    remove() {
-      this.msg = ''
-      this.uploadValue('')
-      this.$refs[this.refKey].value = ''
-      this.fileList = false
+    remove(index,rows) {
+      debugger
+      rows.splice(index, 1);
+      // this.msg = "";
+      // this.uploadValue("");
+      // this.$refs[this.refKey].value = "";
+      // this.fileListShow = false;
     },
     change() {
-      let dom = this.$refs[this.refKey]
-      let val = dom.value
-      this.msg = val.substring(val.lastIndexOf('\\') + 1)
+      let dom = this.$refs[this.refKey];
+      let val = dom.value;
+      debugger;
+      this.msg = val.substring(val.lastIndexOf("\\") + 1);
       if (val) {
         let option = {
           type: this.type,
           size: 0
+        };
+        // let _files = [];
+        // if (this.multiple) {
+        //   this.filesList = this.filesList.concat(Array.from(dom.files));
+        // } else {
+        //   this.filesList = this.filesList.concat(Array.from(dom.files));
+        // }
+        var _filesList = this.filesList.concat(Array.from(dom.files));
+        for(var i=0;i<_filesList.length;i++){
+          debugger
         }
-        let checkResult = FileChecker.fileValidate(dom.files[0], option)
+
+        let checkResult = FileChecker.fileValidate(this.filesList[0], option);
         if (checkResult.isSuccess) {
-          this.uploadValue(dom.files[0])
-          this.fileList = true
+          this.uploadValue(dom.files[0]);
+          this.fileListShow = true;
         } else {
-          this.msg = checkResult.message
-          this.remove()
+         // this.msg = checkResult.message;
+         // this.remove();
           this.$message({
             message: checkResult.message,
-            type: 'error'
-          })
+            type: "error"
+          });
         }
       } else {
         this.$message({
-          message: '请选择上传文件',
-          type: 'error'
-        })
-        this.remove()
+          message: "请选择上传文件",
+          type: "error"
+        });
+      //  this.remove();
       }
     }
   },
-  created() {}
-}
+  created() {
+    that = this;
+  }
+};
 </script>
 
 <style  scoped>
@@ -81,7 +105,7 @@ export default {
   color: #fff;
   text-decoration: none;
 }
-.input-file input[type='file'] {
+.input-file input[type="file"] {
   position: absolute;
   top: 0;
   right: 0;
@@ -102,7 +126,7 @@ export default {
   font-size: 12px;
   padding-left: 4px;
   white-space: nowrap;
-  margin-top:10px;
+  margin-top: 10px;
 }
 .fileName i {
   margin-right: 8px;
