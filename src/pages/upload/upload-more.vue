@@ -1,6 +1,6 @@
 <template>
   <div>
-    <upload :type="type" :text='uploadText' v-model="uploadFiles" :multiple='true'></upload>
+    <upload :type="type"  v-model="uploadFiles" :multiple='true'> <i class="el-icon-document"></i>solt多文件上传</upload>
     <button @click="uploaCk" class="btn btn-sm">上传</button>
   </div>
 
@@ -11,8 +11,7 @@ export default {
   data() {
     return {
       type: "xlsx,xls",
-      uploadFiles: "",
-      uploadText: "选取多个文件"
+      uploadFiles: ""
     };
   },
   methods: {

@@ -1,7 +1,8 @@
 <template>
   <div>
     <!-- 上传多文件 multiple 可以选择多个 单个进行 push -->
-    <span class="input-file">{{text}}
+    <span class="input-file">
+      <slot></slot>
       <input @change="change" :ref="refKey" type="file" class="imgFile" :multiple="multiple">
     </span>
 
@@ -19,7 +20,7 @@ import FileChecker from "./fileChecker.js";
 let that = null;
 export default {
   name: "upload",
-  props: ["type", "text", "multiple"],
+  props: ["type", "multiple"],
   data() {
     return {
       refKey: "inputKey",
