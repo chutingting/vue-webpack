@@ -24,6 +24,11 @@ export default {
         });
         return;
       }
+      let formData = new FormData();
+      formData.append('file',this.uploadFiles)
+      this.$http.post("/aaa",formData).then(data => {
+       
+      });
       console.log(this.uploadFiles);
     }
   },

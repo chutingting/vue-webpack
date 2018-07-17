@@ -6,12 +6,14 @@
       <input @change="change" :ref="refKey" type="file" class="imgFile" :multiple="multiple">
     </span>
 
-    <div v-if="fileListShow">
-      <div class="fileName" v-for="(item,index) in filesList" :key="index">
-        <i class="el-icon-document"></i> {{item.name}}
-        <i class="el-icon-close close" @click="remove(index, filesList)"></i>
+    <transition name="fade">
+      <div v-if="fileListShow">
+        <div class="fileName" v-for="(item,index) in filesList" :key="index">
+          <i class="el-icon-document"></i> {{item.name}}
+          <i class="el-icon-close close" @click="remove(index, filesList)"></i>
+        </div>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 
@@ -33,15 +35,9 @@ export default {
     },
     remove(index, rows) {
       rows.splice(index, 1);
-    },
-    isMultiple() {
-      let dom = this.$refs[this.refKey];
-      if (this.multiple) {
-        this.filesList = this.filesList.concat(Array.from(dom.files));
-      } else {
-        this.filesList = Array.from(dom.files);
+      if (this.filesList == 0) {
+        this.updateValue("");
       }
-      return this.filesList;
     },
     change() {
       let dom = this.$refs[this.refKey];
@@ -51,11 +47,14 @@ export default {
           type: this.type,
           size: 0
         };
-        this.isMultiple();
-        let checkResult = FileChecker.fileValidate(this.filesList, option);
-        if (checkResult.isSuccess) {
-          this.updateValue(this.filesList);
-        } else {
+        let checkResult = FileChecker.fileValidate(dom.files, option);
+        if (checkResult) {
+          this.filesList = this.filesList.concat(Array.from(checkResult.data));
+          this.multiple
+            ? this.updateValue(this.filesList)
+            : this.updateValue(this.filesList[0]);
+        }
+        if (!checkResult.isSuccess) {
           this.$message({
             message: checkResult.message,
             type: "error"
@@ -120,9 +119,15 @@ export default {
   line-height: 24px;
   cursor: pointer;
 }
-/* .fileName:hover{
-    cursor: pointer;
-} */
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
 </style>
  
 

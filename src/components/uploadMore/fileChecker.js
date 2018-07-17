@@ -1,47 +1,47 @@
 class CheckResult {
-  constructor(isSuccess, message) {
-    this.message = message
-    this.isSuccess = isSuccess
+  constructor(isSuccess, message,data) {
+    this.message = message;
+    this.isSuccess = isSuccess;
+    this.data = data;
   }
 }
-CheckResult.SUCCESS = new CheckResult(true, 'success')
 
+CheckResult.SUCCESS = new CheckResult(true, 'success')
 
 let obj = {
   fileValidate_size(file, size) {
     let fileSize = Math.round(file.size / 1024 * 100) / 100; //单位为KB
   },
   fileValidate_type(file, type) {
+    let files = [],flag = false;
+    // 判断后缀名
     if (type) {
-      try {
-        file.forEach((data, index) => {
-          let fileName = data.name
-          let suffix = fileName.substring(fileName.lastIndexOf('.') + 1)
-          if (type.indexOf(',') == -1) {
-            if (type != suffix) {
-              // return new CheckResult(false, '后缀名只能是' + type)
-              file.splice(index, 1);
-              foreach.break = new Error("StopIteration");
-            }
-          } else {
-            let res = type.split(',').filter(item => {
-              return item.toLowerCase() == suffix.toLowerCase()
-            })
-            if (res.length == 0) {
-              file.splice(index, 1);
-              // return new CheckResult(false, '后缀名只能是' + type)
-              foreach.break = new Error("StopIteration");
-            }
+      for (var i = 0; i < file.length; i++) {
+        let fileName = file[i].name;
+        let suffix = fileName.substring(fileName.lastIndexOf('.') + 1);
+        if (type.indexOf(',') == -1) {
+          if (type == suffix) {
+            files.push(file[i]);
+          }else{
+            flag = true;
           }
-        });
-      } catch (e) {
-        if (e.message === "foreach is not defined") {
-          return new CheckResult(false, '后缀名只能是' + type);
-        } else throw e
+        } else {
+          let res = type.split(',').filter(item => {
+            return item.toLowerCase() == suffix.toLowerCase();
+          })
+          if (res.length != 0) {
+            files.push(file[i]);
+          }else{
+            flag = true;
+          }
+        }
       }
-
     }
-    return CheckResult.SUCCESS
+    if(flag){
+      return new CheckResult(false, '您只能选择符合条件的文件' , files);
+    }else{
+      return new CheckResult(true, 'sucess', files)
+    }
   },
 
 
