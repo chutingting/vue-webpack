@@ -39,6 +39,15 @@ export default {
         this.updateValue("");
       }
     },
+    isMultiple(data) {
+      if (this.multiple) {
+        this.filesList = this.filesList.concat(Array.from(data));
+        this.updateValue(this.filesList);
+      } else {
+        this.filesList = Array.from(data);
+        this.updateValue(this.filesList[0]);
+      }
+    },
     change() {
       let dom = this.$refs[this.refKey];
       let val = dom.value;
@@ -49,10 +58,7 @@ export default {
         };
         let checkResult = FileChecker.fileValidate(dom.files, option);
         if (checkResult) {
-          this.filesList = this.filesList.concat(Array.from(checkResult.data));
-          this.multiple
-            ? this.updateValue(this.filesList)
-            : this.updateValue(this.filesList[0]);
+          this.isMultiple(checkResult.data);
         }
         if (!checkResult.isSuccess) {
           this.$message({

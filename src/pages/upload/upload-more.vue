@@ -1,6 +1,6 @@
 <template>
   <div>
-    <upload :type="type"  v-model="uploadFiles" :multiple='true'> <i class="el-icon-document"></i>solt多文件上传</upload>
+    <upload :type="type"  v-model="uploadFiles" :multiple='false'> <i class="el-icon-document"></i>solt多文件上传</upload>
     <button @click="uploaCk" class="btn btn-sm">上传</button>
   </div>
 
