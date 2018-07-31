@@ -5,6 +5,7 @@ import Echarts from "../pages/nav1/echarts.vue";
 import PromisePage from '@/pages/nav1/promise.vue'
 import Home from "../pages/Home.vue";
 import Directive from '../pages/nav1/directive.vue';
+import NotFound from '../pages/404.vue';
 
 let routes = [
   /* {
@@ -75,7 +76,13 @@ let routes = [
         component: uploadMore
       }
     ]
-  }
+  },
+  {
+    path: '/404',
+    component: NotFound,
+    name: '',
+    hidden: true
+},
 ]
 
 export default routes;
